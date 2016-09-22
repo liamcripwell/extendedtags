@@ -1,5 +1,4 @@
 <?php
-use yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -34,6 +33,7 @@ use yii\widgets\ActiveForm;
         <?php echo $form->field($model, 'tags')->checkboxList(explode(", ", Yii::$app->user->getIdentity()->tags), array('separator'=>'<br>')); ?>
         <br>
         <?php echo CHtml::submitButton(Yii::t('UserModule.views_account_editSettings', '- Remove Tag(s)'), array('class' => 'btn btn-primary')); ?>
+        <?php $form->end(); ?>
     </div>
 </div>
 

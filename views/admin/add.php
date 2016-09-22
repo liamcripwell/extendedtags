@@ -1,5 +1,4 @@
 <?php
-use yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -48,5 +47,7 @@ use yii\widgets\ActiveForm;
             $tags->getTags();
             ?>
         </p>
+
+        <?php $form->end(); ?>
     </div>
 </div>
