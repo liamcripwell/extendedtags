@@ -6,6 +6,7 @@ use humhub\modules\extendedtags\models\forms\TakeSurvey;
 use yii;
 use humhub\modules\extendedtags\models\forms\AddTags;
 use humhub\modules\extendedtags\models\forms\RemoveTags;
+use humhub\modules\extendedtags\models\forms\ImportTags;
 use humhub\modules\extendedtags\models\SurveyPreferences;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
@@ -94,6 +95,47 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         return $this->render('survey', Array('model' => $model));
     }
+
+    public function actionImport(){
+        $form = new ImportTags();
+
+        return $this->render('import', array(
+            'model' => $form
+        ));
+    }
+
+    public function actionUpload(){
+        require_once(dirname(__FILE__) . "/../lib/parsecsv.lib.php");
+        $csv = new \parseCSV();
+        $model = new ImportTags();
+
+        $validImports = array();
+
+        if(isset($_POST['ImportTags']))
+	    {
+
+	        $model->attributes=$_POST['ImportTags'];
+	        if(!empty($_FILES['ImportTags']['tmp_name']['csv_file']))
+	        {
+
+	            $file = \yii\web\UploadedFile::getInstance($model,'csv_file');
+	            $group_id = 1;
+
+				$csv->auto($file->tempName);
+
+				foreach($csv->data as $data) {
+
+    			    $importData = $data;
+
+    			    $validImports[] = $importData;
+                }
+
+	        }
+
+	    }
+
+        return $this->render('import_complete', array(
+            'validImports' => $validImports
+        ));
+    }
 }
-
-

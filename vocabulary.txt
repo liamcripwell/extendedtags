@@ -1,0 +1,21 @@
+#---------- Semantic Tags ----------#
+// Preferences //
+beds:{int}
+baths:{int}
+cars:{int}
+
+// Locational //
+{suburb}
+    -> Suburb vocabularity could potentially be mined from properties
+       at index time. Alternatively there could be a field in the tag module
+       where the user can explicitly specify a suburb (or collection).
+
+#---------- Fixed Tags ----------#
+// Property Types //
+house
+unit
+apartment
+land
+
+// Misc. //
+park
