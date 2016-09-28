@@ -34,6 +34,9 @@ class AdminController extends \humhub\modules\admin\components\Controller
         return $this->render('index');
     }
 
+    /**
+     * Action for adding tags to tagset
+     */
     public function actionAdd()
     {
         $user = Yii::$app->user->getIdentity();
@@ -54,6 +57,9 @@ class AdminController extends \humhub\modules\admin\components\Controller
         return $this->render('add', Array('model' => $model));
     }
 
+    /**
+     * Action for removing tags from tagset
+     */
     public function actionRemove()
     {
         $user = Yii::$app->user->getIdentity();
@@ -76,6 +82,10 @@ class AdminController extends \humhub\modules\admin\components\Controller
         return $this->render('remove', Array('model' => $model));
     }
 
+    /**
+     * Action for taking tagset generation survey
+     * TODO: make this functional
+     */
     public function actionSurvey()
     {
         $user = Yii::$app->user->getIdentity();
@@ -96,6 +106,9 @@ class AdminController extends \humhub\modules\admin\components\Controller
         return $this->render('survey', Array('model' => $model));
     }
 
+    /**
+     * Action for importing tag vocabulary from csv
+     */
     public function actionImport(){
         $form = new ImportTags();
 
@@ -104,6 +117,9 @@ class AdminController extends \humhub\modules\admin\components\Controller
         ));
     }
 
+    /**
+     * Action to perform upload of tagset from file
+     */
     public function actionUpload(){
         require_once(dirname(__FILE__) . "/../lib/parsecsv.lib.php");
         $csv = new \parseCSV();
@@ -111,28 +127,24 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         $validImports = array();
 
-        if(isset($_POST['ImportTags']))
-	    {
+        if(isset($_POST['ImportTags'])){
+            $model->attributes=$_POST['ImportTags'];
 
-	        $model->attributes=$_POST['ImportTags'];
-	        if(!empty($_FILES['ImportTags']['tmp_name']['csv_file']))
-	        {
+	     if(!empty($_FILES['ImportTags']['tmp_name']['csv_file'])){
 
-	            $file = \yii\web\UploadedFile::getInstance($model,'csv_file');
-	            $group_id = 1;
+	        $file = \yii\web\UploadedFile::getInstance($model,'csv_file');
+	        $group_id = 1;
 
-				$csv->auto($file->tempName);
+		$csv->auto($file->tempName);
 
-				foreach($csv->data as $data) {
-
-    			    $importData = $data;
-
-    			    $validImports[] = $importData;
+		foreach($csv->data as $data) {
+                    $importData = $data;
+    		    $validImports[] = $importData;
                 }
 
-	        }
-
 	    }
+
+	}
 
         return $this->render('import_complete', array(
             'validImports' => $validImports
