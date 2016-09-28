@@ -4,10 +4,12 @@ namespace humhub\modules\extendedtags\controllers;
 
 use humhub\modules\extendedtags\models\forms\TakeSurvey;
 use yii;
+use humhub\modules\extendedtags\models\Tag;
 use humhub\modules\extendedtags\models\forms\AddTags;
 use humhub\modules\extendedtags\models\forms\RemoveTags;
 use humhub\modules\extendedtags\models\forms\ImportTags;
 use humhub\modules\extendedtags\models\SurveyPreferences;
+use humhub\modules\extendedtags\lib;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
 
@@ -126,6 +128,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = new ImportTags();
 
         $validImports = array();
+        $invalidImports = array();
 
         if(isset($_POST['ImportTags'])){
             $model->attributes=$_POST['ImportTags'];
@@ -136,10 +139,19 @@ class AdminController extends \humhub\modules\admin\components\Controller
 	        $group_id = 1;
 
 		$csv->auto($file->tempName);
+                // filter out duplicate tags
 
 		foreach($csv->data as $data) {
                     $importData = $data;
-    		    $validImports[] = $importData;
+                    $tagModel = new Tag();
+                    $tagModel->tag = $importData['tag'];
+
+                    if($tagModel->save()){
+    		        $validImports[] = $importData;
+                    }else{
+                        $invalidImports[] = $importData;
+                    }
+
                 }
 
 	    }
@@ -147,7 +159,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
 	}
 
         return $this->render('import_complete', array(
-            'validImports' => $validImports
+            'validImports' => $validImports,
+            'invalidImports' => $invalidImports
         ));
     }
 }

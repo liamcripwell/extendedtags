@@ -48,5 +48,18 @@
             <?php } ?>
         </table>
 
+        <h5>Failed Imports</h5>
+        <table class="table">
+            <tr>
+                <td><b>tag</b></td>
+            </tr>
+            <?php foreach($invalidImports as $data) { ?>
+                <tr>
+                    <td><?php echo $data['tag']; ?></td>
+                </tr>
+            <?php } ?>
+        </table>
+
+
     </div>
 </div>
