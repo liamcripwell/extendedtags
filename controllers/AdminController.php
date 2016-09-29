@@ -45,11 +45,33 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = new AddTags();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            // rejects tags that are already in user's tagset
             if (!in_array($model->tag, $tags = explode(", ", $user->tags)) && $model->tag != "") {
-                $user->tags = $user->tags . ", " . $model->tag;
-                $user->save();
+                 
+                // check if duplicates exist within db
+                $duplicate = Tag::find()
+                    ->where(['tag' => $model->tag])
+                    ->count();
+
+                // rejects entry of tags not in vocabulary
+                if ($duplicate < 1){
+                    Yii::$app->getSession()->setFlash('error', "The entered tag is not accepted.");
+                }else{
+                    $user->tags = $user->tags . ", " . $model->tag;
+                    $user->save();
+                }
             } else{
                 Yii::$app->getSession()->setFlash('error', "The entered tag already exists.");
+            }
+
+            // check if duplicates exist within db
+            $duplicate = Tag::find()
+                ->where(['tag' => $model->tag])
+                ->count();
+
+            // rejects entry of tags not in vocabulary
+            if ($duplicate < 1){
+                Yii::$app->getSession()->setFlash('error', "The entered tag is not accepted.");
             }
 
             // clears text field content
@@ -147,7 +169,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
                         ->count();
 
                     // if no duplicates exist then inset into db
-                    if($duplicates < 1){
+                    if(!$duplicates){
                         $importData = $data;
                         $tagModel = new Tag();
                         $tagModel->tag = $importData['tag'];
@@ -164,6 +186,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 	    }
 	}
 
+        // render page listing valid and invalid tag imports
         return $this->render('import_complete', array(
             'validImports' => $validImports,
             'invalidImports' => $invalidImports

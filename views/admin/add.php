@@ -34,6 +34,7 @@ use yii\widgets\ActiveForm;
         <?php echo $form->field($model, 'tag'); ?>
         <?php
         // displays error flash message TODO: make it disappear after it has been shown once.
+        // TODO: once above is achieved show flash where tag not in vocab.
         if(Yii::$app->getSession()->getFlash('error', "The entered tag already exists.")) {
             echo '<div class="flash-' . 'error' . '">' . "The entered tag already exists." . "</div>\n";
         }
