@@ -139,23 +139,29 @@ class AdminController extends \humhub\modules\admin\components\Controller
 	        $group_id = 1;
 
 		$csv->auto($file->tempName);
-                // filter out duplicate tags
 
 		foreach($csv->data as $data) {
-                    $importData = $data;
-                    $tagModel = new Tag();
-                    $tagModel->tag = $importData['tag'];
+                    // check if duplicates exist within db
+                    $duplicates = Tag::find()
+                        ->where(['tag' => $data['tag']])
+                        ->count();
 
-                    if($tagModel->save()){
-    		        $validImports[] = $importData;
+                    // if no duplicates exist then inset into db
+                    if($duplicates < 1){
+                        $importData = $data;
+                        $tagModel = new Tag();
+                        $tagModel->tag = $importData['tag'];
+
+                        if($tagModel->save()){
+    		            $validImports[] = $importData;
+                        }else{
+                            $invalidImports[] = $importData;
+                        }
                     }else{
-                        $invalidImports[] = $importData;
+                        $invalidImports[] = $data;
                     }
-
                 }
-
 	    }
-
 	}
 
         return $this->render('import_complete', array(

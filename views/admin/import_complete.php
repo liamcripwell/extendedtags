@@ -36,28 +36,36 @@
         }
         ?>
 
-        <h5>Successful Imports</h5>
+        <h5><b>Successful Imports</b></h5>
         <table class="table">
-            <tr>
-                <td><b>tag</b></td>
-            </tr>
-            <?php foreach($validImports as $data) { ?>
+        <?php 
+            if(count($validImports) > 0){
+                foreach($validImports as $data) { ?>
                 <tr>
                     <td><?php echo $data['tag']; ?></td>
                 </tr>
-            <?php } ?>
+            <?php }
+            }else{ ?>
+                <tr>
+                    <td><?php echo "none"; ?></td>
+                </tr>     
+        <?php } ?>
         </table>
 
-        <h5>Failed Imports</h5>
-        <table class="table">
-            <tr>
-                <td><b>tag</b></td>
-            </tr>
-            <?php foreach($invalidImports as $data) { ?>
+        <h5><b>Failed Imports</b></h5>
+        <table class="table"> 
+        <?php 
+            if(count($invalidImports) > 0){
+                foreach($invalidImports as $data) { ?>
                 <tr>
                     <td><?php echo $data['tag']; ?></td>
                 </tr>
-            <?php } ?>
+            <?php }
+            } else { ?>
+                <tr>
+                    <td><?php echo "none"; ?></td>
+                </tr>     
+        <?php } ?>
         </table>
 
 
