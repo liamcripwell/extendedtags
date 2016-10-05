@@ -24,6 +24,9 @@ use yii\widgets\ActiveForm;
                 <a href="<?php echo Url::toRoute('remove'); ?>">Remove Tags</a>
             </li>
             <li>
+                <a href="<?php echo Url::toRoute('import'); ?>">Import Tags</a>
+            </li>
+            <li>
                 <a href="<?php echo Url::toRoute('survey'); ?>">Take Survey</a>
             </li>
         </ul>
@@ -36,4 +39,3 @@ use yii\widgets\ActiveForm;
         <?php $form->end(); ?>
     </div>
 </div>
-

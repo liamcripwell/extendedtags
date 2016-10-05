@@ -25,6 +25,27 @@ use yii\widgets\ActiveForm;
 <div class="panel panel-default">
     <div class="panel-heading"><strong>Bulk</strong> Import</div>
     <div class="panel-body">
+        <p>This module allows for extended management of user tags.</p>
+        <hr/>
+        <ul class="nav nav-pills">
+            <li>
+                <a href="<?php echo Url::toRoute('index'); ?>">Overview</a>
+            </li>
+            <li>
+                <a href="<?php echo Url::toRoute('add'); ?>">Add Tags</a>
+            </li>
+            <li>
+                <a href="<?php echo Url::toRoute('remove'); ?>">Remove Tags</a>
+            </li>
+            <li class="active">
+                <a href="<?php echo Url::toRoute('import'); ?>">Import Tags</a>
+            </li>
+            <li>
+                <a href="<?php echo Url::toRoute('survey'); ?>">Take Survey</a>
+            </li>
+        </ul>
+        <hr/>
+
         <h4>Upload CSV</h4>
         <div class="well">
         <?php $form = ActiveForm::begin(array(

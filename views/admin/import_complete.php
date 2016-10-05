@@ -16,10 +16,34 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+ use Yii;
+ use yii\helpers\Url;
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><strong>Tag</strong> Import</div>
     <div class="panel-body">
+        <p>This module allows for extended management of user tags.</p>
+        <hr/>
+        <ul class="nav nav-pills">
+            <li>
+                <a href="<?php echo Url::toRoute('index'); ?>">Overview</a>
+            </li>
+            <li>
+                <a href="<?php echo Url::toRoute('add'); ?>">Add Tags</a>
+            </li>
+            <li>
+                <a href="<?php echo Url::toRoute('remove'); ?>">Remove Tags</a>
+            </li>
+            <li class="active">
+                <a href="<?php echo Url::toRoute('import'); ?>">Import Tags</a>
+            </li>
+            <li>
+                <a href="<?php echo Url::toRoute('survey'); ?>">Take Survey</a>
+            </li>
+        </ul>
+        <hr/>
+
         <?php
         $flashes = Yii::$app->session->getAllFlashes();
 
@@ -38,7 +62,7 @@
 
         <h5><b>Successful Imports</b></h5>
         <table class="table">
-        <?php 
+        <?php
             if(count($validImports) > 0){
                 foreach($validImports as $data) { ?>
                 <tr>
@@ -48,13 +72,13 @@
             }else{ ?>
                 <tr>
                     <td><?php echo "none"; ?></td>
-                </tr>     
+                </tr>
         <?php } ?>
         </table>
 
         <h5><b>Failed Imports</b></h5>
-        <table class="table"> 
-        <?php 
+        <table class="table">
+        <?php
             if(count($invalidImports) > 0){
                 foreach($invalidImports as $data) { ?>
                 <tr>
@@ -64,7 +88,7 @@
             } else { ?>
                 <tr>
                     <td><?php echo "none"; ?></td>
-                </tr>     
+                </tr>
         <?php } ?>
         </table>
 

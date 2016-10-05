@@ -22,6 +22,9 @@ use \humhub\modules\user\models\User;
                 <a href="<?php echo Url::toRoute('remove'); ?>">Remove Tags</a>
             </li>
             <li>
+                <a href="<?php echo Url::toRoute('import'); ?>">Import Tags</a>
+            </li>
+            <li>
                 <a href="<?php echo Url::toRoute('survey'); ?>">Take Survey</a>
             </li>
         </ul>
@@ -31,4 +34,3 @@ use \humhub\modules\user\models\User;
 
     </div>
 </div>
-
