@@ -46,32 +46,27 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             // rejects tags that are already in user's tagset
-            if (!in_array($model->tag, $tags = explode(", ", $user->tags)) && $model->tag != "") {
-                 
-                // check if duplicates exist within db
-                $duplicate = Tag::find()
-                    ->where(['tag' => $model->tag])
-                    ->count();
-
-                // rejects entry of tags not in vocabulary
-                if ($duplicate < 1){
-                    Yii::$app->getSession()->setFlash('error', "The entered tag is not accepted.");
-                }else{
+            if (!in_array(strtolower($model->tag), $tags = explode(", ", $user->tags)) && $model->tag != "") {
+                if (strpos($model->tag, 'beds:') !== false || strpos($model->tag, 'baths:') !== false || 
+                strpos($model->tag, 'cars:') !== false ){
                     $user->tags = $user->tags . ", " . $model->tag;
                     $user->save();
+                } else{
+                    // check if duplicates exist within db
+                    $duplicate = Tag::find()
+                        ->where(['tag' => $model->tag])
+                        ->count();
+
+                    // rejects entry of tags not in vocabulary
+                    if ($duplicate < 1){
+                        Yii::$app->getSession()->setFlash('error', "The entered tag is not accepted.");
+                    }else{
+                        $user->tags = $user->tags . ", " . strtolower($model->tag);
+                        $user->save();
+                    }
                 }
             } else{
                 Yii::$app->getSession()->setFlash('error', "The entered tag already exists.");
-            }
-
-            // check if duplicates exist within db
-            $duplicate = Tag::find()
-                ->where(['tag' => $model->tag])
-                ->count();
-
-            // rejects entry of tags not in vocabulary
-            if ($duplicate < 1){
-                Yii::$app->getSession()->setFlash('error', "The entered tag is not accepted.");
             }
 
             // clears text field content
@@ -133,7 +128,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Action for importing tag vocabulary from csv
      */
-    public function actionImport(){
+    public function actionImport()
+    {
         $form = new ImportTags();
 
         return $this->render('import', array(
@@ -144,7 +140,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
     /**
      * Action to perform upload of tagset from file
      */
-    public function actionUpload(){
+    public function actionUpload()
+    {
         require_once(dirname(__FILE__) . "/../lib/parsecsv.lib.php");
         $csv = new \parseCSV();
         $model = new ImportTags();
@@ -155,14 +152,14 @@ class AdminController extends \humhub\modules\admin\components\Controller
         if(isset($_POST['ImportTags'])){
             $model->attributes=$_POST['ImportTags'];
 
-	     if(!empty($_FILES['ImportTags']['tmp_name']['csv_file'])){
+            if(!empty($_FILES['ImportTags']['tmp_name']['csv_file'])){
 
-	        $file = \yii\web\UploadedFile::getInstance($model,'csv_file');
-	        $group_id = 1;
+                $file = \yii\web\UploadedFile::getInstance($model,'csv_file');
+                $group_id = 1;
 
-		$csv->auto($file->tempName);
+                $csv->auto($file->tempName);
 
-		foreach($csv->data as $data) {
+                foreach($csv->data as $data) {
                     // check if duplicates exist within db
                     $duplicates = Tag::find()
                         ->where(['tag' => $data['tag']])
@@ -175,7 +172,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
                         $tagModel->tag = $importData['tag'];
 
                         if($tagModel->save()){
-    		            $validImports[] = $importData;
+                            $validImports[] = $importData;
                         }else{
                             $invalidImports[] = $importData;
                         }
@@ -183,8 +180,8 @@ class AdminController extends \humhub\modules\admin\components\Controller
                         $invalidImports[] = $data;
                     }
                 }
+            }
 	    }
-	}
 
         // render page listing valid and invalid tag imports
         return $this->render('import_complete', array(
