@@ -45,8 +45,11 @@ class AdminController extends \humhub\modules\admin\components\Controller
         $model = new AddTags();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
             // rejects tags that are already in user's tagset
             if (!in_array(strtolower($model->tag), $tags = explode(", ", $user->tags)) && $model->tag != "") {
+
+                // checks if tag is quantitative and avoid db vocabulary lookup if so 
                 if (strpos($model->tag, 'beds:') !== false || strpos($model->tag, 'baths:') !== false || 
                 strpos($model->tag, 'cars:') !== false ){
                     $user->tags = $user->tags . ", " . $model->tag;
@@ -59,8 +62,13 @@ class AdminController extends \humhub\modules\admin\components\Controller
 
                     // rejects entry of tags not in vocabulary
                     if ($duplicate < 1){
-                        Yii::$app->getSession()->setFlash('error', "The entered tag is not accepted.");
+                        // currently allows any tag to be entered for the sake of development ease
+                        $user->tags = $user->tags . ", " . strtolower($model->tag);
+                        $user->save();
+                        //Yii::$app->getSession()->setFlash('error', "The entered tag is not accepted.");
                     }else{
+                        // NOTE: current allowing any tag to be entered for the sake of development convenience
+                        // when the platform goes live this will need to be disabled
                         $user->tags = $user->tags . ", " . strtolower($model->tag);
                         $user->save();
                     }
