@@ -16,7 +16,7 @@ class AddTags extends \yii\base\Model
     public function rules()
     {
         return array(
-            ['tag', 'string', 'max' => 15]
+            ['tag', 'string', 'max' => 30]
         );
     }
 }
