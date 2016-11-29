@@ -16,7 +16,7 @@ class Events extends \yii\base\Object
 
         $event->sender->addItem(array(
             'label' => "My Tags",
-            'url' => Url::to(['/extendedtags/admin']),
+            'url' => Url::to(['/extendedtags/user']),
             'icon' => '<i class="fa fa-tags"></i>',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'extendedtags'),
             'sortOrder' => 600,
