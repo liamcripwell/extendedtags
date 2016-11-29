@@ -8,6 +8,20 @@ use yii\helpers\Url;
 class Events extends \yii\base\Object
 {
 
+    public static function onTopMenuInit($event)
+    {
+        if (Yii::$app->user->isGuest) {
+            return;
+        }
+
+        $event->sender->addItem(array(
+            'label' => "My Tags",
+            'url' => Url::to(['/extendedtags/admin']),
+            'icon' => '<i class="fa fa-tags"></i>',
+            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'extendedtags'),
+            'sortOrder' => 600,
+        ));
+    }
 
     /**
      * Defines what to do if admin menu is initialized.
@@ -20,7 +34,7 @@ class Events extends \yii\base\Object
             'label' => 'ExtendedTags',
             'url' => Url::to(['/extendedtags/admin']),
             'group' => 'manage',
-            'icon' => '<i class="fa fa-trophy"></i>',
+            'icon' => '<i class="fa fa-tags"></i>',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'extendedtags' && Yii::$app->controller->id == 'admin'),
             'sortOrder' => 510,
         ));
