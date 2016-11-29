@@ -32,9 +32,7 @@ class TakeSurvey extends \yii\base\Model
             array('maxBedrooms', 'string'),
             array('bathrooms', 'string'),
             array('carSpaces', 'string'),
-            //array('minPrice', 'string'),
-            //array('maxPrice', 'string'),
-            array_flip(array('buildFactors', 'checkArray')),
+            array('buildFactors', 'checkArray'),
             array('econFactors', 'checkArray'),
         );
     }
