@@ -32,7 +32,7 @@ class Events extends \yii\base\Object
     {
         $event->sender->addItem(array(
             'label' => 'ExtendedTags',
-            'url' => Url::to(['/extendedtags/admin']),
+            'url' => Url::to(['/extendedtags/user']),
             'group' => 'manage',
             'icon' => '<i class="fa fa-tags"></i>',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'extendedtags' && Yii::$app->controller->id == 'admin'),

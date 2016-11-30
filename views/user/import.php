@@ -52,7 +52,7 @@ use yii\widgets\ActiveForm;
             'id'=>'registration-form',
             'enableAjaxValidation'=>true,
             'options' => array('enctype' => 'multipart/form-data'),
-            'action' => Url::to(['/extendedtags/admin/upload'])
+            'action' => Url::to(['/extendedtags/user/upload'])
         )); ?>
         <?php echo $form->errorSummary($model); ?>
         <?php echo $form->field($model,'csv_file')->fileInput(); ?>
