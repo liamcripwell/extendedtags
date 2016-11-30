@@ -192,7 +192,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
 	    }
 
         // render page listing valid and invalid tag imports
-        return $this->render('import_complete', array(
+        return $this->render('user/import_complete', array(
             'validImports' => $validImports,
             'invalidImports' => $invalidImports
         ));
