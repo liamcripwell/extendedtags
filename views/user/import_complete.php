@@ -27,9 +27,6 @@
         <hr/>
         <ul class="nav nav-pills">
             <li>
-                <a href="<?php echo Url::toRoute('index'); ?>">Overview</a>
-            </li>
-            <li>
                 <a href="<?php echo Url::toRoute('add'); ?>">Add Tags</a>
             </li>
             <li>

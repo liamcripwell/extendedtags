@@ -32,7 +32,7 @@ class UserController extends \humhub\components\Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->actionAdd();
     }
 
     /**
